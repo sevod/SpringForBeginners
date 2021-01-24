@@ -64,3 +64,12 @@ DI - это аутсорсинг добавления/внедрения зав�
     <bean id="myPerson" class="org.sevod.spring_introducion.Person">
         <constructor-arg ref="myPet"/>
     </bean>
+
+###DI через setter
+В Person создаем setter для Pet и конструктор без аргументов.
+
+Изменяем бин myPerson в конфиг файле. Добавляем `<property name="pet" ref="myPet"/>`. pet в данном случае означает что надо использовать setPet в Person и передать туда пета (myPet).
+
+    <bean id="myPerson" class="org.sevod.spring_introducion.Person">
+        <property name="pet" ref="myPet"/>
+    </bean>
