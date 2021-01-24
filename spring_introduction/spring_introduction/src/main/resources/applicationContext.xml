@@ -9,6 +9,8 @@
 
     <bean id="myPet"
           class="org.sevod.spring_introducion.Cat">
-
+    </bean>
+    <bean id="myPerson" class="org.sevod.spring_introducion.Person">
+        <constructor-arg ref="myPet"/>
     </bean>
 </beans>
