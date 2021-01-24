@@ -1,5 +1,46 @@
+Курс Spring для начинающих от Заур Трегулов.
+
 Используем комьюнити идею. Будем использовать maven. 
 
 Создаем новый maven проект с архитипом maven-archetype-quickstart и добавляем с сайта maven три зависимости   
 
 `spring-context spring-core spring-beans`
+
+###Основное назначение Spring Container:
+Видео 01.04
+1. IoC - инверсия управления или Аутсортинг создания и управления объектами. Т.е. передача программистом прав на создание и управление обьктами Spring-у.
+2. DI - Dependency Injection Внедрение зависимостей
+
+Спринг контейнер будет создавать объекты. Какие именно описано в конфигурациооном файле.
+
+###Способы конфигурации Spring Container:
+- XML file
+- Annotations + XML file
+- Java code
+
+
+###applicationContext.xml
+Cоздаем applicationContext.xml начало заполняю его из файла в курсе. Это наймспейсы. Это будет наш `конфигурационный файл`. 
+
+Создаем в нем бин bean
+````
+    <bean id="myPet"
+          class="org.sevod.spring_introducion.Dog">        
+    </bean>
+````
+
+###Spring Bean (Bean)
+Это объект который создается и управляется Spring Container
+
+Создаем `спринг контейнер` в файле test.java и получаем нашего пета который и есть Bean
+
+````
+    ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("aplicationContext.xml");
+    Pet pet = context.getBean("myPet", Pet.class);
+````
+
+В этот раз мы получили собаку, но мы можем получить и кошку. Для этого нужно будет изменить настройки в конфигурационном файле.
+
+Обязательно! Закрываем контекст
+
+`context.close();`
