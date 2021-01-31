@@ -13,5 +13,7 @@
     <bean id="myPerson" class="org.sevod.spring_introducion.Person">
 <!--        <constructor-arg ref="myPet"/>-->
         <property name="pet" ref="myPet"/>
+        <property name="surname" value="Ivan"/>
+        <property name="age" value="33"/>
     </bean>
 </beans>
