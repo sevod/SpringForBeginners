@@ -106,3 +106,60 @@ classpath - это где находится resources.
 Теперь данные читаются из файла `myApp.properties`
 
 Писать `person.surname` не обязаетльно, можно в одно слова например `surname`. Но используем класс, что бы не запутаться.
+
+
+#Bean scope 
+Scope (область видимости) определяет:
+- Жизненный цикл бина
+- возможное количество создаваемых бинов
+
+###Виды bean scope:
+- singleton 
+- prototype
+- request
+- session
+- global-session
+
+###singleton 
+
+создается по умолчанию. 
+
+Создается сразу после прочтения Spring Container-ом конфиг файла. 
+
+`scope="singleton"`. stateless объект.
+
+    <bean id="myPerson" class="org.sevod.spring_introducion.Person" scope="singleton">
+
+###prototype
+
+Создается только после обращения к Spring Container-у с помощью метода getBean.
+
+При каждом обращении создается новый Bean в Spring Container-е
+
+Подходит для stateful объектов.
+
+    <bean id="myPerson" class="org.sevod.spring_introducion.Person" scope="prototype">
+
+###init-method
+
+Вызывается после создания бина и внедрения зависимостей.
+
+
+###destroy-method
+
+Вызывается перед остановкой приложения.
+
+###Создание init и destroy методов
+
+- Модификатор доступа (access modifier) может быть любым. 
+- Ретерн тайп тоже может быть любым (обычно void). 
+- Методы должны быть без параметров.
+- Для scope="prototype" метод инит вызывается для каждого обьекта, метод дестрой не вызывается. Программист делает это самостоятельно.
+
+В самом классе создаем два метода, можем дать им любые названия. Далее в конфиге созадем `init-method="init" destroy-method="destroy"`
+
+    <bean id="myPet"
+          class="org.sevod.spring_introducion.Cat"
+          init-method="init"
+          destroy-method="destroy">
+    </bean>    
