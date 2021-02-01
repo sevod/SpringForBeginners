@@ -257,4 +257,21 @@ Scope (область видимости) определяет:
     private String surname;
     @Value("${person.age}")
     private int age;    
+    
+####@Scope
+
+- @Scope("singleton")
+- @Scope("prototype")
+
+
+    @Component("personBean")
+    @Scope("prototype")
+
+####@PostConstruct (init method) 
+Эта и следующая анотация, трбует установки через маэвен, поскольку в Java9 стала устаревшей, а в Java11 удалена.
+
+Устанавливаем с мавен Javax Annotation API.
+
+####@PreDestroy (destroy method)
+
 
