@@ -194,7 +194,7 @@ Scope (область видимости) определяет:
 - Сеттер.
 - Поле.
 
-####@Autowired для конструктора
+####@Autowired для конструктора (Constructor injection)
 
     @Autowired
     public Person(Pet pet) {
@@ -206,16 +206,36 @@ Scope (область видимости) определяет:
 
 Если в классе только один конструктор, то со Спринг 4.3  @Autowired сработает, автоматически.    
 
-####@Autowired для сеттеров
+####@Autowired для сеттеров (Setter injection)
 
     @Autowired
     public void setPet(Pet pet) {
     
-####@Autowired для поля
+####@Autowired для поля (Field injection)
 
     @Autowired
     private Pet pet;
     
 Сеттеры при этом не используются.        
 
+####@Qualifier
+
+Используем в паре с @Autowired, когда несколько бинов, что бы указать какой бин использовать.
+
+Пример с полем
+
+    @Autowired
+    @Qualifier("dog")
+    private Pet pet;
+
+Пример с полем    
+    
+    @Autowired
+    @Qualifier("dog")
+    public void setPet(Pet pet) {        
+    
+Пример для конструктора
+
+    @Autowired
+    public Person(@Qualifier("dog") Pet pet) {    
 
