@@ -108,19 +108,19 @@ classpath - это где находится resources.
 Писать `person.surname` не обязаетльно, можно в одно слова например `surname`. Но используем класс, что бы не запутаться.
 
 
-#Bean scope 
+##Bean scope 
 Scope (область видимости) определяет:
 - Жизненный цикл бина
 - возможное количество создаваемых бинов
 
-###Виды bean scope:
+####Виды bean scope:
 - singleton 
 - prototype
 - request
 - session
 - global-session
 
-###singleton 
+####singleton 
 
 создается по умолчанию. 
 
@@ -130,7 +130,7 @@ Scope (область видимости) определяет:
 
     <bean id="myPerson" class="org.sevod.spring_introducion.Person" scope="singleton">
 
-###prototype
+####prototype
 
 Создается только после обращения к Spring Container-у с помощью метода getBean.
 
@@ -140,16 +140,16 @@ Scope (область видимости) определяет:
 
     <bean id="myPerson" class="org.sevod.spring_introducion.Person" scope="prototype">
 
-###init-method
+####init-method
 
 Вызывается после создания бина и внедрения зависимостей.
 
 
-###destroy-method
+####destroy-method
 
 Вызывается перед остановкой приложения.
 
-###Создание init и destroy методов
+####Создание init и destroy методов
 
 - Модификатор доступа (access modifier) может быть любым. 
 - Ретерн тайп тоже может быть любым (обычно void). 
@@ -163,3 +163,59 @@ Scope (область видимости) определяет:
           init-method="init"
           destroy-method="destroy">
     </bean>    
+
+#Конфигурации с помощью аннотаций @
+Что бы спринг понимал где искать наши аннотации, в конфиг файл добавляем строку
+
+        <context:component-scan base-package="org.sevod.spring_introducion"/>
+        
+####@Component
+
+`@Component` - ищется первой и создается(регистрируется) бин в Спринг контейнере.
+
+Теперь на нужные нам классы навешиваем аннотации, в кавычках id бина (не обязательный, будет id "cat").  
+
+    @Component("catBean")
+    public class Cat implements Pet{
+    
+Если две заглавных буквы в назавнии класса будет id с большой буквы. id = MCat
+        
+    @Component
+    public class MCat implements Pet{   
+    
+##DI(внедрение зависимостей) с помощью аннотаций    
+    
+####@Autowired
+
+Автосвязывание. Используется для внеднения зависимостей (DI). 
+
+Используется в:
+- Конструктор.
+- Сеттер.
+- Поле.
+
+####@Autowired для конструктора
+
+    @Autowired
+    public Person(Pet pet) {
+        System.out.println("Person Bean is created");
+        this.pet = pet;
+    }
+    
+Поиск бина для связывания идет по типу.   
+
+Если в классе только один конструктор, то со Спринг 4.3  @Autowired сработает, автоматически.    
+
+####@Autowired для сеттеров
+
+    @Autowired
+    public void setPet(Pet pet) {
+    
+####@Autowired для поля
+
+    @Autowired
+    private Pet pet;
+    
+Сеттеры при этом не используются.        
+
+
