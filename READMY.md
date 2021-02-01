@@ -296,7 +296,9 @@ Scope (область видимости) определяет:
     @Configuration
     public class MyConfig {
 
-Все бины и DI описываем внутри конфигурации (класс MyConfig в этом случае)
+Все бины и DI описываем внутри конфигурации (класс MyConfig в этом случае). Получение контекста:
+
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);
 
 ####@Bean
 Создаем бин cat. Бин id для нового бина в данном случае будет catBean. При необходимости указываем Scope
@@ -314,3 +316,9 @@ Scope (область видимости) определяет:
         return new Person(catBean());
     }    
 
+####@PropertySource
+Используется для того что бы указать расположение файла properties.
+
+    @Configuration
+    @PropertySource("classpath:myApp.properties")
+    public class MyConfig {
