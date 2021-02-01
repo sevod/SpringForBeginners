@@ -183,7 +183,7 @@ Scope (область видимости) определяет:
     @Component
     public class MCat implements Pet{   
     
-##DI(внедрение зависимостей) с помощью аннотаций    
+#DI(внедрение зависимостей) с помощью аннотаций    
     
 ####@Autowired
 
@@ -238,4 +238,23 @@ Scope (область видимости) определяет:
 
     @Autowired
     public Person(@Qualifier("dog") Pet pet) {    
+    
+####@Value
+Используем что бы заполнить значение полей. При этом нет необходимость в сетерах.
+
+    @Value("Ivanov")
+    private String surname;
+    @Value("33")
+    private int age;
+    
+Добавляем проперти в конфиг файл
+
+    <context:property-placeholder location="myApp.properties"/>   
+
+Меняем Value
+    
+    @Value("${person.surname}")
+    private String surname;
+    @Value("${person.age}")
+    private int age;    
 
