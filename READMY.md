@@ -275,6 +275,7 @@ Scope (область видимости) определяет:
 ####@PreDestroy (destroy method)
 
 #Конфигурация Spring Containera-a с помощью Java кода.
+###Первый способ
 Для создания конфигурации используем класс MyConfig (можно назвать по другому) с аннотациями
 
     @Configuration
@@ -284,13 +285,32 @@ Scope (область видимости) определяет:
 Для получения контекста (Spring Containera):
 
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);
-
-###Первый способ
 ####@Configuration
 `@Configuration` Означает что данный класс является конфигурацией.
 ####@ComponentScan
 `@ComponentScan("org.sevod.spring_introducion")` мы показываем какой пакет нужно сканировать на наличие бинов и разных аннотаций.
 
+###Второй способ
+Сканирование не используем и аннотацию @Component не используем
 
+    @Configuration
+    public class MyConfig {
 
+Все бины и DI описываем внутри конфигурации (класс MyConfig в этом случае)
+
+####@Bean
+Создаем бин cat. Бин id для нового бина в данном случае будет catBean. При необходимости указываем Scope
+
+    @Bean
+    @Scope("singleton")
+    public Pet catBean(){
+        return new Cat();
+    }
+    
+А так мы создаем Person и делаем DI в Person (засунули туда кота).    
+    
+    @Bean
+    public Person personBean(){
+        return new Person(catBean());
+    }    
 

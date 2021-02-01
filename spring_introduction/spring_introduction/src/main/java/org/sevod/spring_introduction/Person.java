@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@Component("personBean")
+//@Component("personBean")
 public class Person {
-    @Autowired
-    @Qualifier("catBean")
+//    @Autowired
+//    @Qualifier("catBean")
     private Pet pet;
 //    @Value("${person.surname}")
     private String surname;
@@ -35,8 +35,9 @@ public class Person {
 //        System.out.println("Person Bean is created default constructor");
 //    }
 
-    @Autowired
-    public Person(@Qualifier("dog") Pet pet) {
+//    @Autowired
+//    public Person(@Qualifier("dog") Pet pet) {
+    public Person(Pet pet) {
         System.out.println("Person Bean is created");
         this.pet = pet;
     }
