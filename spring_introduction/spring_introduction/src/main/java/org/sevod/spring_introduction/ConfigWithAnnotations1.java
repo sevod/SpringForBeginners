@@ -1,4 +1,4 @@
-package org.sevod.spring_introducion;
+package org.sevod.spring_introduction;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

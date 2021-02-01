@@ -268,10 +268,29 @@ Scope (область видимости) определяет:
     @Scope("prototype")
 
 ####@PostConstruct (init method) 
-Эта и следующая анотация, трбует установки через маэвен, поскольку в Java9 стала устаревшей, а в Java11 удалена.
+Эта и следующая анотация, требует установки через мавен, поскольку в Java9 стала устаревшей, а в Java11 удалена.
 
 Устанавливаем с мавен Javax Annotation API.
 
 ####@PreDestroy (destroy method)
+
+#Конфигурация Spring Containera-a с помощью Java кода.
+Для создания конфигурации используем класс MyConfig (можно назвать по другому) с аннотациями
+
+    @Configuration
+    @ComponentScan("org.sevod.spring_introduction")
+    public class MyConfig {
+    
+Для получения контекста (Spring Containera):
+
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);
+
+###Первый способ
+####@Configuration
+`@Configuration` Означает что данный класс является конфигурацией.
+####@ComponentScan
+`@ComponentScan("org.sevod.spring_introducion")` мы показываем какой пакет нужно сканировать на наличие бинов и разных аннотаций.
+
+
 
 
