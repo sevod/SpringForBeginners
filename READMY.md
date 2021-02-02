@@ -438,7 +438,7 @@ AOP frameworks:
     public void beforeGetBookAdvice(){        
 
 ####@Pointcut - Объявление pointcut    
-Один раз объявляем и используем сколько угодно раз
+Один раз объявляем и используем сколько угодно раз. Если сделать public можно использовать в других классах-аспектах
 
     @Pointcut("execution(* get*())")
     private void allGetMethods(){}
@@ -448,3 +448,27 @@ AOP frameworks:
 
     @Before("allGetMethods()")
     public void beforeGetSecurityAdvice(){
+    
+####Комбинирование pointcut
+Это объединение Poitcut-ов с помощью && || !    
+
+    @Pointcut("execution(* org.sevod.aop.UniLibrary.get* ())")
+    private void allGetMethodsFromUniLibrary(){}
+
+    @Pointcut("execution(* org.sevod.aop.UniLibrary.return* ())")
+    private void allReturnMethodsFromUniLibrary(){}
+
+    @Pointcut("allGetMethodsFromUniLibrary() || allReturnMethodsFromUniLibrary()")
+    private void allGetAndReturnMethodsFromUniLibrary(){}
+    
+Еще пример && и !
+
+    @Pointcut("execution(* org.sevod.aop.UniLibrary.*())")
+    private void allMethodsFromUniLibrary(){}
+
+    @Pointcut("execution(public void org.sevod.aop.UniLibrary.returnMagazine()))")
+    private void returnMagazineFromUniLibrary(){}
+
+    @Pointcut("allMethodsFromUniLibrary() && !returnMagazineFromUniLibrary()")
+    private void allMethodsExceptReturnMagazineFromUniLibrary(){}        
+    
