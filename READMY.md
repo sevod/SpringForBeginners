@@ -6,6 +6,8 @@
 
 `spring-context spring-core spring-beans`
 
+#Inversion of Control (инверсия управления) и Dependency Injection (внедрение зависимости)
+
 #Inversion of Control (инверсия управления)
 
 ###Spring Container
@@ -322,3 +324,56 @@ Scope (область видимости) определяет:
     @Configuration
     @PropertySource("classpath:myApp.properties")
     public class MyConfig {
+
+
+#Aspect Oriented Programming (Аспектно ориентированное программирование)
+
+`AOP` - парадигма, основанная на идее разделения основного и служебного функционала. Служебный функционал записывается в Aspect-классы.
+
+К сквозному функционалу относят:
+- Логирование
+- Проверка прав
+- Обработка транзакций
+- Обработка исключений
+- Кэширование
+- И т.д.
+
+Будем создавать `Aspect-классы`
+
+`AOP Proxy` - это промежуточное звено. При обращении к какому ту методу все идет через прокси.
+
+AOP frameworks:
+- Spring AOP по умолчанию поддерживает AOP. Но только саму распространенную и необходимую.
+- AspectJ AOP фреймворк. Предоставляет всю функциональность в отличии от спринга.
+
+##Создаем приложение AOP
+все будем делать в пакете aop
+
+####@EnableAspectJAutoProxy - позволяет использовать Spring AOP Proxy. Навешиваем на класс MyConfig.
+
+####@Aspect - навешивается на класс-аспект.
+Что бы заработал надо установить пакет мавен "aspectj weaver" и почему то мне еще понадобилось "aspectjrt"
+
+    @Component
+    @Aspect
+    public class LoggingAspect {
+
+####Advice
+Это термин из AOP означающий что должно произойти при вызове метода (в нашем случае getBook).
+
+####Advice Типы
+- Before выполняется до метода с основной логикой.
+- After returning выполнятся после нормального окончания метода с основной логикой.
+- After throwing выполняется после основного метода если было исключение.
+- After / After finally выполняется после окончания метода с основной логикой.
+- Around выполняется до и после метода с основной логикой.
+
+####@Before
+
+    @Before("execution(public void getBook())")
+    public void beforeGetBookAdvice(){
+    
+Строка  `@Before("execution(public void getBook())")` называется `Pointcut`. Читается как перед выполнением(execution) метода void getBook().
+
+####Pointcut 
+- это выражение, описывающее где должен быть применён Advice.
