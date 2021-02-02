@@ -377,3 +377,39 @@ AOP frameworks:
 
 ####Pointcut 
 - это выражение, описывающее где должен быть применён Advice.
+
+####AspectJ Pointcut expression language
+Используется в Spring AOP. Это определенные правила написания выражений для создания Pointcut.
+
+####шаблон для написания pointcut
+часть элементов шаблона не обязательна, после этих элементов стоит "?"
+
+    execution(modifiers-pattern? return-type-puttern declaring-type-pattern? method-name-pattern(parameters-pattern)throws-pattern?)
+    
+Если метод подходит под шаблон, то при вызове этого метода будет вызываться и Advice. Под шаблон может подходит один или несколько методов.
+
+`declaring-type-pattern` это класс в котором указан метод.
+    
+        @Before("execution(public void org.sevod.aop.UniLibrary.getBook())")
+        public void beforeGetBookAdvice(){
+
+`throws-pattern` это исключения которые выбрасывает метод.
+
+####whildecut
+мы можем использовать "*" для более широкого охвата названий.
+
+    @Before("execution(public void get*())")
+    public void beforeGetBookAdvice(){    
+    
+####return-type-puttern
+
+    public String returnBook(){
+        System.out.println("мы возвращаем книгу в UniLibrary");
+            
+не сработает для, поскольку ожидает void, а не String
+
+    @Before("execution(public void returnBook())")
+    
+сработает @Before("execution(public * returnBook())")    
+
+                 
