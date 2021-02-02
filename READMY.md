@@ -412,4 +412,27 @@ AOP frameworks:
     
 сработает @Before("execution(public * returnBook())")    
 
-                 
+####pointcut и параметры метода
+Пример:
+
+    public void getBook(String bookName){
+    
+    @Before("execution(public void get*(String))")
+    public void beforeGetBookAdvice(){          
+    
+Или
+
+    @Before("execution(public void get*(*))")
+    public void beforeGetBookAdvice(){            
+    
+Если нам нужно что бы подходило под любое количество параметров (ноль или больше) любого типа используем (..)      
+
+    @Before("execution(public void get*(..))")
+    public void beforeGetBookAdvice(){          
+    
+Если в параметрах класс
+
+    public void getBook(Book book){
+
+    @Before("execution(public void getBook(org.sevod.aop.Book))")
+    public void beforeGetBookAdvice(){        
