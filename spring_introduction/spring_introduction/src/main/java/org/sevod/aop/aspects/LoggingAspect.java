@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class LoggingAspect {
 
-    @Before("execution(public void getBook(org.sevod.aop.Book))")
+    @Before("execution(public void get*(org.sevod.aop.Book))")
     public void beforeGetBookAdvice(){
-        System.out.println("beforeGetBookAdvice Попытка получить книгу");
+        System.out.println("beforeGetBookAdvice Попытка получить книгу / журнал");
     }
     @Before("execution(public * returnBook())")
     public void beforeReturnBookAdvice(){

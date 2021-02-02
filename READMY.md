@@ -436,3 +436,15 @@ AOP frameworks:
 
     @Before("execution(public void getBook(org.sevod.aop.Book))")
     public void beforeGetBookAdvice(){        
+
+####@Pointcut - Объявление pointcut    
+Один раз объявляем и используем сколько угодно раз
+
+    @Pointcut("execution(* get*())")
+    private void allGetMethods(){}
+
+    @Before("allGetMethods()")
+    public void beforeGetLoggingAdvice(){
+
+    @Before("allGetMethods()")
+    public void beforeGetSecurityAdvice(){
