@@ -368,7 +368,7 @@ AOP frameworks:
 - After / After finally выполняется после окончания метода с основной логикой.
 - Around выполняется до и после метода с основной логикой.
 
-####@Before
+####@Before (Advice)
 
     @Before("execution(public void getBook())")
     public void beforeGetBookAdvice(){
@@ -515,7 +515,7 @@ AOP frameworks:
             }
         }    
         
-####@AfterReturning
+####@AfterReturning (Advice)
 Выполняется только после нормального окончания метода с основной логикой, но до присвоения результата этого метода какой либо переменной.
 
     @AfterReturning("execution(* getStudents())")
@@ -533,4 +533,15 @@ AOP frameworks:
         avgGrade++;
         firstStudent.setAvgGrade(avgGrade);
         
-Поскольку тут у нас уже несколько элементов `@AfterReturning(pointcut = "execution(* getStudents())", returning = "students")` мы пишем уже их названия в параметрах Advice. `pointcut` и `returning`               
+Поскольку тут у нас уже несколько элементов `@AfterReturning(pointcut = "execution(* getStudents())", returning = "students")` мы пишем уже их названия в параметрах Advice. `pointcut` и `returning`
+
+####@AfterThroeing (Advice)        
+Выполняется после окончания работы метода, если было выброшено исключение.
+
+    @AfterThrowing("execution (* getStudents())")
+    public void afterThrowingGetStudentsAdvice(){       
+    
+Можно получить параметры исключения
+
+    @AfterThrowing(pointcut = "execution (* getStudents())", throwing = "exeption")
+    public void afterThrowingGetStudentsAdvice(Throwable exeption){    
