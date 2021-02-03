@@ -10,10 +10,15 @@ import java.util.List;
 @Aspect
 public class UniversityLoggingAspect {
 
-    @AfterThrowing(pointcut = "execution (* getStudents())", throwing = "exeption")
-    public void afterThrowingGetStudentsAdvice(Throwable exeption){
-        System.out.println("afterThrowingGetStudentsAdvice: логируем выброс исключения " + exeption);
+    @After("execution (* getStudents())")
+    public void afterGetStudentsAdvice(){
+        System.out.println("afterGetStudentsAdvice: логируем выброс исключения ");
     }
+
+//    @AfterThrowing(pointcut = "execution (* getStudents())", throwing = "exeption")
+//    public void afterThrowingGetStudentsAdvice(Throwable exeption){
+//        System.out.println("afterThrowingGetStudentsAdvice: логируем выброс исключения " + exeption);
+//    }
 
 //    @Before("execution(* getStudents())")
 //    public void beforeGetStudentsLoggingAdvice(){

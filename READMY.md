@@ -545,3 +545,11 @@ AOP frameworks:
 
     @AfterThrowing(pointcut = "execution (* getStudents())", throwing = "exeption")
     public void afterThrowingGetStudentsAdvice(Throwable exeption){    
+    
+####@After
+Выполняется после завершения метода. Вне зависимости от исключения. Нет доступа к результатам метода.   
+
+    @After("execution (* getStudents())")
+    public void afterGetStudentsAdvice(){
+    
+         
