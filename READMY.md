@@ -484,4 +484,36 @@ AOP frameworks:
     @Component
     @Aspect
     @Order(2)
-    public class SecurityAspect {       
+    public class SecurityAspect {    
+    
+###Join Point
+Это точка/момент времени когда следует применить Advice. Прописывается в параметрах метода Advice `JoinPoint joinPoint`. Получаем информацию о сигнатуре и параметрах этого метода.
+
+#####MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();
+    @Before("MyPointCuts.allAddMethods()")
+    public void beforeAddLoggingAdvice(JoinPoint joinPoint){
+        MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();
+        System.out.println("methodSignature = " + methodSignature);
+        System.out.println("methodSignature.getMethod = " + methodSignature.getMethod());
+        System.out.println("methodSignature.getReturnType = " + methodSignature.getReturnType());
+        System.out.println("methodSignature.getName = " + methodSignature.getName());    
+        
+#####Object[] arguments = joinPoint.getArgs();
+
+        if (methodSignature.getName().equals("addBook")){
+            Object[] arguments = joinPoint.getArgs();
+            for(Object obj: arguments){
+                if(obj instanceof Book){
+                    Book myBook = (Book) obj;
+                    System.out.println("Информация о книге: название - " + myBook.getName() +
+                            "; автор - " + myBook.getAuthor() +
+                            "; год издания - " + myBook.getYearOfPublication());
+                }
+                else if (obj instanceof String){
+                    System.out.println("Книгу в библиотеку добавил " + obj);
+                }
+            }
+        }    
+        
+
+        
