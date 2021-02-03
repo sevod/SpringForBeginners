@@ -515,5 +515,22 @@ AOP frameworks:
             }
         }    
         
+####@AfterReturning
+Выполняется только после нормального окончания метода с основной логикой, но до присвоения результата этого метода какой либо переменной.
 
+    @AfterReturning("execution(* getStudents())")
+    public void afterReturningStudentsLoggingAdvice(){
+
+Метод AfterReturning может перехватывать результат таргет метода и делать с ним определенную работу. Что бы перехватить результат используем `returning = "students"` и `List<Student> students`
+
+    @AfterReturning(pointcut = "execution(* getStudents())", returning = "students")
+    public void afterReturningStudentsLoggingAdvice(List<Student> students){
+        Student firstStudent = students.get(0);
+        String nameSurname = firstStudent.getNameSurname();
+        nameSurname = "Mr. " + nameSurname;
+        firstStudent.setNameSurname(nameSurname);
+        double avgGrade = firstStudent.getAvgGrade();
+        avgGrade++;
+        firstStudent.setAvgGrade(avgGrade);
         
+Поскольку тут у нас уже несколько элементов `@AfterReturning(pointcut = "execution(* getStudents())", returning = "students")` мы пишем уже их названия в параметрах Advice. `pointcut` и `returning`               

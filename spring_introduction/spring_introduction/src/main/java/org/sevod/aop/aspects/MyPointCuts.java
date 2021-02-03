@@ -6,7 +6,7 @@ public class MyPointCuts {
 //    @Pointcut("execution(* get*())")
 //    public void allGetMethods() {
 //    }
-    @Pointcut("execution(* add*(..))")
+    @Pointcut("execution(* _add*(..))")
     public void allAddMethods() {
     }
 
