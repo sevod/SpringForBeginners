@@ -472,3 +472,16 @@ AOP frameworks:
     @Pointcut("allMethodsFromUniLibrary() && !returnMagazineFromUniLibrary()")
     private void allMethodsExceptReturnMagazineFromUniLibrary(){}        
     
+###Порядок выполнения Aspect-ов
+Если мы хотим контролировать порядок выполнения, мы должны разместить методы в разные Aspect-классы. И использовать анотацияю @Order
+####@Order
+
+    @Component
+    @Aspect
+    @Order(1)
+    public class LoggingAspect {
+    
+    @Component
+    @Aspect
+    @Order(2)
+    public class SecurityAspect {       
