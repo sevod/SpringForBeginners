@@ -552,4 +552,28 @@ AOP frameworks:
     @After("execution (* getStudents())")
     public void afterGetStudentsAdvice(){
     
-         
+###@Around (Advice)
+Выполняется до и после основной логики, можно получить/изметь результаты работы таргет метода, предпринять какие либо действия если есть исключение
+
+Around метод по умолчанию перехватывает таргет метод и он не выполняется.    
+    
+####ProceedingJoinPoint
+Это то, что Around Advice принимает на вход от таргет метода.
+
+Так мы получаем результат выполнения нашего таргет метода.
+
+    Object targetMethodResult = proceedingJoinPoint.proceed();          
+    
+Пример:
+
+    @Around("execution(public String returnBook())")
+    public Object aroundReturnBookAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        System.out.println("aroundReturnBookAdvice: В библиотеку пытаются вернуть книгу.");
+        long begin = System.currentTimeMillis();
+        Object targetMethodResult = proceedingJoinPoint.proceed();
+        targetMethodResult = "Маугли";
+        long end = System.currentTimeMillis();
+        System.out.println("aroundReturnBookAdvice: В библиотеку успешно вернули книгу.");
+        System.out.println("aroundReturnBookAdvice: метод returnBook выполнил работу за " + (end - begin) + " миллисекунд");
+        return targetMethodResult;
+    }    
