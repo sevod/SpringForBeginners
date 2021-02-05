@@ -702,4 +702,25 @@ Java класс который отображает информацию опр�
 - GenerationType.IDENTITY автоматическое увеличение столбца по правилам прописанным в БД.
 - GenerationType.SEQUENCE полагается на работу Sequence.
 - GenerationType.TABLE устаревший тип, используется с теми БД которые слабофункциональные.
-- GenerationType.AUTO тип по умолчанию. Зависит о т типа БД с которой мы работаем.             
+- GenerationType.AUTO тип по умолчанию. Зависит о т типа БД с которой мы работаем.        
+
+####Получение данных из hibernate по Id (get).
+
+    session.beginTransaction();
+    Employee employee = session.get(Employee.class, myId);
+    session.getTransaction().commit();         
+    
+####HQL Получение данных из hibernate по произвольному полю
+
+    session.beginTransaction();
+    List<Employee> emps = session.createQuery("from Employee").getResultList();
+    for (Employee e: emps) 
+        System.out.println(e);
+    session.getTransaction().commit();    
+    
+Еще примеры 
+    
+    List<Employee> emps = session.createQuery("from Employee where name LIKE 'Petr'").getResultList();  
+    
+    List<Employee> emps = session.createQuery("from Employee where name = 'Petr' and salary > 100").getResultList();
+Employee и name в этих примерах, это класс и поле из Java, а не из SQL.      
