@@ -584,6 +584,8 @@ Around метод по умолчанию перехватывает тарге�
 - обрабатывать исключения в Advice
 - пробросить исключение дальше
 
+----------------------------------------------------------
+
 #3. Hibernate
     
 ###CRUD
@@ -600,7 +602,7 @@ Root pwd: springcourse
 
 Connection: my_connection
 
-User: bestuser Pwd: bestuser
+User: spec Pwd: Spec123456
 
 DB: my_db
 
@@ -649,3 +651,55 @@ Java класс который отображает информацию опр�
     private int id;
     
 #####@JPA(Java Persistence API)    
+
+##SessionFactory
+Фабрика по производству сессий. SessionFactory читает конфигурационный файл hibernate.
+
+    import org.hibernate.cfg.Configuration; //именно этот пакет для Configuration
+    
+    SessionFactory factory = new Configuration()
+                    .configure("hibernate.cfg.xml")
+                    .addAnnotatedClass(Employee.class)
+                    .buildSessionFactory();
+
+#####Session
+Это обертка вокруг подключения к базе с помощью JDBC. Через сессию мы будем работать с БД.                    
+                    
+    Session session = factory.getCurrentSession();     
+    
+#####Отправка данных в БД
+    session.beginTransaction();
+    session.save(emp);
+    session.getTransaction().commit();
+#####Закрываем SessionFactory
+    factory.close();                   
+    
+###Полный пример SessionFactory Session Отправка данных в БД
+
+        SessionFactory factory = new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Employee.class)
+                .buildSessionFactory();
+
+        try {
+            Session session = factory.getCurrentSession();
+            Employee emp = new Employee("Ivan", "Ivanov", "IT", 700);
+            session.beginTransaction();
+            session.save(emp);
+            session.getTransaction().commit();
+        } finally {
+            factory.close();
+        }    
+        
+#####@GeneratedValue
+Стратегия для генерации Primary Key
+      
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private int id;  
+    
+- GenerationType.IDENTITY автоматическое увеличение столбца по правилам прописанным в БД.
+- GenerationType.SEQUENCE полагается на работу Sequence.
+- GenerationType.TABLE устаревший тип, используется с теми БД которые слабофункциональные.
+- GenerationType.AUTO тип по умолчанию. Зависит о т типа БД с которой мы работаем.             
