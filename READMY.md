@@ -734,7 +734,7 @@ Employee и name в этих примерах, это класс и поле и�
     session.beginTransaction();
     session.createQuery("update Employee set salary=1000 where name = 'Elena' ").executeUpdate();
     session.getTransaction().commit();    
-    
+     
 #####Удаление объектов в БД через hibernate
 
     session.beginTransaction();
@@ -744,4 +744,59 @@ Employee и name в этих примерах, это класс и поле и�
     
     session.beginTransaction();
     session.createQuery("delete Employee where name = 'Elena'").executeUpdate();
+    session.getTransaction().commit();
+    
+######Foreign Key внешний ключ        
+
+##One-to-One
+
+####Uni-directional 
+Это однонаправленные отношения, когда одна сторона о них не знает.
+
+####Bi-directional 
+Это двуноправленные отношеия, когда обе стороны знают друг о друге.
+
+#####@OneToOne
+`cascade = CascadeType.ALL` - означает что операции выполняются не только на текущую энтити, но и на связанные энтити тоже. Например, удаление будет в обоих таблицах.
+#####@JoinColumn(name = "details_id")
+JoinColumn - указывает на столбец, который осуществляет связь с другим объектом.
+
+Данная запись означет, что будет связь один к одному и поле `"details_id"` Foreign Key
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "details_id")
+    private Detail empDetail;
+    
+#####CascadeType
+- ALL для всех
+- PERSIST когда сохраняем объект
+- MERGE объединение
+- REMOVE удаление
+- REFRESH обновление состояния объекта
+- DETACH 
+
+#####Изменяем SessionFactory
+Добавляем .addAnnotatedClass(Detail.class)
+
+        SessionFactory factory = new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Employee.class)
+                .addAnnotatedClass(Detail.class)
+                .buildSessionFactory();       
+                
+#####Добавляем 2 зависимых энтити
+
+    Session session = factory.getCurrentSession();
+    Employee employee = new Employee("Ivan", "Ivanov", "IT", 1000);
+    Detail detail = new Detail("Baku", "123456", "email@gmail.com");
+    employee.setEmpDetail(detail);
+    session.beginTransaction();
+    session.save(employee);
     session.getTransaction().commit();    
+    
+##### session.close(); перенесли в секцию finally на случай исключений    
+    
+    finally {
+        session.close();
+        factory.close();
+    }                
