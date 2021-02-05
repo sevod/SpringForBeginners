@@ -734,3 +734,14 @@ Employee и name в этих примерах, это класс и поле и�
     session.beginTransaction();
     session.createQuery("update Employee set salary=1000 where name = 'Elena' ").executeUpdate();
     session.getTransaction().commit();    
+    
+#####Удаление объектов в БД через hibernate
+
+    session.beginTransaction();
+    Employee employee = session.get(Employee.class, 5);
+    session.delete(employee);
+    session.getTransaction().commit();    
+    
+    session.beginTransaction();
+    session.createQuery("delete Employee where name = 'Elena'").executeUpdate();
+    session.getTransaction().commit();    
