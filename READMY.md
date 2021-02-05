@@ -723,4 +723,14 @@ Java класс который отображает информацию опр�
     List<Employee> emps = session.createQuery("from Employee where name LIKE 'Petr'").getResultList();  
     
     List<Employee> emps = session.createQuery("from Employee where name = 'Petr' and salary > 100").getResultList();
-Employee и name в этих примерах, это класс и поле из Java, а не из SQL.      
+Employee и name в этих примерах, это класс и поле из Java, а не из SQL.   
+
+####Изменение данных в БД через hibernate
+
+    Employee employee = session.get(Employee.class, 2);
+    employee.setName("Sidr");
+    session.getTransaction().commit();
+    
+    session.beginTransaction();
+    session.createQuery("update Employee set salary=1000 where name = 'Elena' ").executeUpdate();
+    session.getTransaction().commit();    
