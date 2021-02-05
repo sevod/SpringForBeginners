@@ -12,8 +12,14 @@ public class NewLogginAspect {
     public Object aroundReturnBookAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         System.out.println("aroundReturnBookAdvice: В библиотеку пытаются вернуть книгу.");
         long begin = System.currentTimeMillis();
-        Object targetMethodResult = proceedingJoinPoint.proceed();
-        targetMethodResult = "Маугли";
+        Object targetMethodResult = null;
+        try {
+            targetMethodResult = proceedingJoinPoint.proceed();
+        }catch (Exception e){
+            System.out.println("aroundReturnBookAdvice: было поймано исключение " + e);
+            throw e;
+            //targetMethodResult = "Неизвестное название книги";
+        }
         long end = System.currentTimeMillis();
         System.out.println("aroundReturnBookAdvice: В библиотеку успешно вернули книгу.");
         System.out.println("aroundReturnBookAdvice: метод returnBook выполнил работу за " + (end - begin) + " миллисекунд");
