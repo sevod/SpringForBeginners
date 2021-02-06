@@ -1,7 +1,5 @@
 package org.sevod.hibernate_test_2.entity;
 
-import org.sevod.hibernate_test.entity.Detail;
-
 import javax.persistence.*;
 
 @Entity
