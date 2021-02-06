@@ -899,7 +899,7 @@ JoinColumn - указывает на столбец, который осущес
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, mappedBy = "department")
     private List<Employee> emps;    
     
-##One-to-Many (Uni-directional)
+###One-to-Many (Uni-directional)
 
 Удаляем в классе Employee все поля ссылающие на Department, а в Department переписываем нотации
 
@@ -908,4 +908,21 @@ JoinColumn - указывает на столбец, который осущес
     private List<Employee> emps;
     
 Здесь поле `department_id` Foreign Key находится в таблице Employee, а не в Department 
+
+##Loading types
+1. Eager (нетерпеливая) загрузка
+2. Lazy (ленивая) загрузка (обычно используют при большом количестве данных)
+
+####Fetch type по умолчанию
+
+- One-to-one   Eager
+- One-to-Many  Lazy
+- Many-to-One  Eager
+- Many-to-Many Lazy
+
+####Fetch type (тип выборки)
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department", fetch = FetchType.EAGER)
+    private List<Employee> emps;
+
 

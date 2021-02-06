@@ -18,8 +18,8 @@ public class Department {
     @Column(name = "min_salary")
     private int minSalary;
 
-    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, mappedBy = "department")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department", fetch = FetchType.EAGER)
+    //@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, mappedBy = "department")
     private List<Employee> emps;
 
     public void addEmployeeToDepartment(Employee employee){
