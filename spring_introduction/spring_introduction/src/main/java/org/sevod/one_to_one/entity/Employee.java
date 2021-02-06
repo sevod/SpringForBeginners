@@ -1,4 +1,4 @@
-package org.sevod.hibernate_test_2.entity;
+package org.sevod.one_to_one.entity;
 
 import javax.persistence.*;
 

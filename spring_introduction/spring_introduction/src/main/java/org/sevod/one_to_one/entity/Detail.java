@@ -1,6 +1,4 @@
-package org.sevod.hibernate_test_2.entity;
-
-import org.sevod.hibernate_test_2.entity.Employee;
+package org.sevod.one_to_one.entity;
 
 import javax.persistence.*;
 

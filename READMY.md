@@ -846,4 +846,66 @@ JoinColumn - указывает на столбец, который осущес
     detail.getEmployee().setEmpDetail(null); //зануляем ссылку на detail перед удалением
     session.delete(detail);
     session.getTransaction().commit();
+    
+##One-to-Many (Bi-directional)
+настройка связи:
+
+в первом классе
+
+`name = "department_id"` форен кей, находится в табице которая отвечает за Many
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id")
+    private Department department;    
+    
+во втором классе
+
+`mappedBy = "department"` department, это поле в первой таблице
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
+    private List<Employee> emps;        
    
+так же во втором классе создаем метод для заполнения поля employee
+
+    public void addEmployeeToDepartment(Employee employee){
+        if (emps == null)
+            emps = new ArrayList<>();
+        emps.add(employee);
+        employee.setDepartment(this); //тут мы employee присваеваем департамент
+    }   
+    
+#####Заполенение данных
+
+    session = factory.getCurrentSession();
+    Department dep = new Department("IT", 1200, 300);
+    Employee emp1 = new Employee("Zaur", "Tregulov", 800);
+    Employee emp2 = new Employee("Elena", "Smirnova", 1000);
+    dep.addEmployeeToDepartment(emp1);
+    dep.addEmployeeToDepartment(emp2);
+    session.beginTransaction();
+    session.save(dep);
+    session.getTransaction().commit();       
+    
+#####Настройка CascadeType
+Что бы при удалении работника не удалялся департамент и наоборот, настраиваем CascadeType. Убираем оттуда DELETE.
+
+    //@ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+    @JoinColumn(name = "department_id")
+    private Department department;    
+    
+    
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, mappedBy = "department")
+    private List<Employee> emps;    
+    
+##One-to-Many (Uni-directional)
+
+Удаляем в классе Employee все поля ссылающие на Department, а в Department переписываем нотации
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id")
+    private List<Employee> emps;
+    
+Здесь поле `department_id` Foreign Key находится в таблице Employee, а не в Department 
+
