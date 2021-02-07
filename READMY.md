@@ -982,4 +982,22 @@ JoinColumn - указывает на столбец, который осущес
     session.beginTransaction();
     session.save(child1);
     session.getTransaction().commit();
+    
+#####Удаление section
+
+    Section section = session.get(Section.class, 3);
+    session.delete(section);    
   
+Для корректного удаления нужно корректно настроить cascade в обоих классах
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE})  
+    
+Но появляется пробема с сохранением.    
+    
+#####CascadeType.PERSIST из пакета javax.persistence
+это не совсем то же самое что и save. В пакете `org.hibernate.annotations` есть отдельный метод save. PERSIST и SAVE разные вещи. SAVE есть в ALL.
+
+#####persist решение этой проблемы (файл Test6)
+
+    //session.save(section);    
+    session.persist(section);    
