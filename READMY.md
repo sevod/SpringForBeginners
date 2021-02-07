@@ -342,7 +342,7 @@ Scope (область видимости) определяет:
 `AOP Proxy` - это промежуточное звено. При обращении к какому ту методу все идет через прокси.
 
 AOP frameworks:
-- Spring AOP по умолчанию поддерживает AOP. Но только саму распространенную и необходимую.
+- Spring AOP по умолчанию поддерживает AOP. Но только самую распространенную и необходимую функциональность.
 - AspectJ AOP фреймворк. Предоставляет всю функциональность в отличии от спринга.
 
 ##Создаем приложение AOP
@@ -445,9 +445,6 @@ AOP frameworks:
     @Before("allGetMethods()")
     public void beforeGetLoggingAdvice(){
 
-    @Before("allGetMethods()")
-    public void beforeGetSecurityAdvice(){
-    
 ####Комбинирование pointcut
 Это объединение Poitcut-ов с помощью && || !    
 
@@ -472,7 +469,7 @@ AOP frameworks:
     private void allMethodsExceptReturnMagazineFromUniLibrary(){}        
     
 ###Порядок выполнения Aspect-ов
-Если мы хотим контролировать порядок выполнения, мы должны разместить методы в разные Aspect-классы. И использовать анотацияю @Order
+Если мы хотим контролировать порядок выполнения, мы должны разместить методы в разные Aspect-классы. И использовать аннотацию @Order
 ####@Order
 
     @Component
@@ -486,7 +483,7 @@ AOP frameworks:
     public class SecurityAspect {    
     
 ###Join Point
-Это точка/момент времени когда следует применить Advice. Прописывается в параметрах метода Advice `JoinPoint joinPoint`. Получаем информацию о сигнатуре и параметрах этого метода.
+Это точка/момент времени когда применяется Advice. Прописывается в параметрах метода Advice `JoinPoint joinPoint`. Получаем информацию о сигнатуре и параметрах этого метода.
 
 #####MethodSignature methodSignature = (MethodSignature)joinPoint.getSignature();
     @Before("MyPointCuts.allAddMethods()")
@@ -552,7 +549,7 @@ AOP frameworks:
     public void afterGetStudentsAdvice(){
     
 ###@Around (Advice)
-Выполняется до и после основной логики, можно получить/изметь результаты работы таргет метода, предпринять какие либо действия если есть исключение
+Выполняется до и после основной логики, можно получить/изменить результаты работы таргет метода, предпринять какие-либо действия если есть исключение
 
 Around метод по умолчанию перехватывает таргет метод и он не выполняется.    
     
@@ -913,7 +910,7 @@ JoinColumn - указывает на столбец, который осущес
 1. Eager (нетерпеливая) загрузка
 2. Lazy (ленивая) загрузка (обычно используют при большом количестве данных)
 
-####Fetch type по умолчанию
+####Fetch type по умолчанию 
 
 - One-to-one   Eager
 - One-to-Many  Lazy
@@ -925,4 +922,64 @@ JoinColumn - указывает на столбец, который осущес
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "department", fetch = FetchType.EAGER)
     private List<Employee> emps;
 
+##Many-to-Many
 
+####Join Table
+Таблица связей, для обслуживания взаимоотношений Many-to-Many. Служебная таблица.
+
+`Столбцы Join Table` это Foreign Keys, которые ссылаются на Primary Key связываемых таблиц.
+
+#####@JoinTable подключаем Entity Child
+- `name = "child_section"` - имя служебной таблицы в БД (Join Table)
+- `joinColumns = @JoinColumn(name = "child_id")` - имя колонки в Join Table которая будет Foreign Keys для Child
+- `inverseJoinColumns = @JoinColumn(name = "section_id")` - имя колонки в Join Table для другой таблицы, с которой мы налаживаем связь
+
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "child_section",
+            joinColumns = @JoinColumn(name = "child_id"),
+            inverseJoinColumns = @JoinColumn(name = "section_id")
+    )
+
+#####Все тоже самое и для второго Entity Section
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "child_section",
+            joinColumns = @JoinColumn(name = "section_id"),
+            inverseJoinColumns = @JoinColumn(name = "child_id")
+    )
+    private List<Child> children;
+    
+    
+#####Добавляем детей в секцию (полный пример в файле Test)
+ 
+    Section section1 = new Section("Football");
+    
+    Child child1 = new Child("Zaur", 5);
+    Child child2 = new Child("Masha", 7);
+    Child child3 = new Child("Vasya", 6);
+    
+    section1.addChildToSection(child1);
+    section1.addChildToSection(child2);
+    section1.addChildToSection(child3);
+    
+    session.beginTransaction();    
+    session.save(section1);    
+    session.getTransaction().commit();
+  
+#####Добавляем секции в ребенка (полный пример в файле Test2)  
+    
+    Section section1 = new Section("Volleyball");
+    Section section2 = new Section("Chess");
+    Section section3 = new Section("Math");
+    
+    Child child1 = new Child("Igor", 10);
+    
+    child1.addSectionToChild(section1);
+    child1.addSectionToChild(section2);
+    child1.addSectionToChild(section3);
+    
+    session.beginTransaction();
+    session.save(child1);
+    session.getTransaction().commit();
+  

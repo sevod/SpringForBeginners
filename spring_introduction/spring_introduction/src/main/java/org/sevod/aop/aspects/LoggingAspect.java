@@ -81,7 +81,4 @@ public class LoggingAspect {
         System.out.println("beforeAddLoggingAdvice: логирование попытки получить книгу/журнал");
         System.out.println("------------------------------------------------------");
     }
-
-
-
 }
