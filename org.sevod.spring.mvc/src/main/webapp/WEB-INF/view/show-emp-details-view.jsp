@@ -8,9 +8,12 @@
     <title>Document</title>
 </head>
 <body>
-<h2>I wish you luck in Spring MVC learning</h2>
+<h2>Dear Emloyee, you are WELCOME!!!</h2>
+
 <br>
 <br>
-<a href="http://localhost:8080/spring_course_mvc/askDetails">Please write your details</a>
+<br>
+Yor name: ${param.emloyeeName}
+
 </body>
 </html>

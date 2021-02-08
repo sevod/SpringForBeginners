@@ -8,9 +8,12 @@
     <title>Document</title>
 </head>
 <body>
-<h2>I wish you luck in Spring MVC learning</h2>
+<h2>Dear Employee, Please enter your details</h2>
 <br>
 <br>
-<a href="http://localhost:8080/spring_course_mvc/askDetails">Please write your details</a>
+<form action="showDetails" method="get">
+    <input type="text" name="emloyeeName" placeholder="Write your name"/>
+    <input type="submit"/>
+</form>
 </body>
 </html>
