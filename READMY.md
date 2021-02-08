@@ -1024,3 +1024,6 @@ JoinColumn - указывает на столбец, который осущес
 
 #####JSTL Java Server Pages Standart Tag Library
 
+##Настрока Spring MVC
+1. Создаем maven-archetype-webapp 
+
