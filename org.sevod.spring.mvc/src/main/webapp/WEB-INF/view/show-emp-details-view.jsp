@@ -14,8 +14,14 @@
 <br>
 <br>
 <%--Yor name: ${param.emloyeeName}--%>
-Yor name: ${nameAttribute}
+<%--Yor name: ${nameAttribute}--%>
+
+Your name: ${employee.name}
 <br>
-Test: ${myAttribute}
+<br>
+Your surname: ${employee.surname}
+<br>
+<br>
+Your salary: ${employee.salary}
 </body>
 </html>
