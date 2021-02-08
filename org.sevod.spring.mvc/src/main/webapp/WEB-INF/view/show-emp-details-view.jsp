@@ -13,7 +13,9 @@
 <br>
 <br>
 <br>
-Yor name: ${param.emloyeeName}
-
+<%--Yor name: ${param.emloyeeName}--%>
+Yor name: ${nameAttribute}
+<br>
+Test: ${myAttribute}
 </body>
 </html>
