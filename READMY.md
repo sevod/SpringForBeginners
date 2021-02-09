@@ -1026,4 +1026,306 @@ JoinColumn - указывает на столбец, который осущес
 
 ##Настрока Spring MVC
 1. Создаем maven-archetype-webapp 
+2. Добавляем зависимости в maven: "spring-context" "spring-core" "spring-beans" "spring-webmvc" "jstl"
+3. Настрока Tomcat  видео 56
+4. Создаем папку java и помечаем ее как "Sources Root"
+5. Конфигурируем web.xml (копипастим с курса). В нем конфигурируем DispatcherServlet.
+6. Конфигурируем applicationContext.xml (копипастим с курса).
 
+####@Controller
+Это специальный компонент и анотация @Component не нужна.
+
+#####@RequestMapping
+@RequestMapping("/") анотация используемая для мапинга вэб страниц. 
+В данном случае все запросы по адрессу "/" будут перенаправлены на first-view.jsp (префикс и постфикс прописаны в web.xml)
+
+    @Controller
+    public class MyController {
+        @RequestMapping("/")
+        public String showFirstView(){
+            return "first-view";
+        }
+    }
+    
+#####Изменение URL адреса в настройках Томкат
+Видео 57 8.00 "Edit configuration" -> "Deployment"
+
+#####Работа с методом get
+${param.emloyeeName} - emloyeeName получаем из get запроса
+
+###Model
+Устанавливаем в maven "JavaServlet(TM) Specification"
+Model - это контейнер для хранения данных. Находясь в Controller, мы можем добавлять данные в Model и затем эти данные использовать во View.
+
+#####HttpServletRequest параметр контролера
+используем это в параметрах контролера (методе), для получения данных пришедших с http запроса.
+        
+#####Model -параметр в контролере, данные которые мы будем использовать далее
+
+    @RequestMapping("/showDetails")
+    public String showEmployeeDetails(HttpServletRequest request, Model model){
+        String empName = request.getParameter("emloyeeName"); //emloyeeName это get параметр кторой прийдет к нам в http запросе
+        empName = "Mr. " + empName;
+        model.addAttribute("nameAttribute", empName);      
+        
+#####${nameAttribute}
+А так мы потом читаем данные с модели во view (jsp файле).
+    
+    Yor name: ${nameAttribute}        
+    
+#####@RequestParam
+Данная анотация позволяет читать данные непосредственно с http запроса
+
+    @RequestMapping("/showDetails")
+    public String showEmployeeDetails(@RequestParam("emloyeeName") String empName, Model model){
+        empName = "Mr. " + empName;      
+        
+`@RequestParam("emloyeeName") String empName` - читаем данные с поля  "emloyeeName"  и помещаем в переменную "empName" 
+
+#####@RequestMapping для Controller
+@RequestMapping - может быть как для класса (контролер мэпинг), так и для метода (метод мэпинг).
+
+Над классом, это для всех методов класса. Над методом, только для него, но адрес с класса добавляется в начало адреса для контролера.      
+
+    @Controller
+    @RequestMapping("/employee")
+    public class MyController {
+    
+#####Ambiguous mapping    
+Это ошибка. Возникает когда один и тот же url прописан в разные методы.
+
+##Формы Spring MVC
+
+####MVC форма input
+
+В метод вызывающий вью добавляем в параметры модель, а внутри метода в модель добавляем класс Employee. Так мы связали модель и класс. 
+
+    @RequestMapping("/askDetails")
+    public String askEmployeeDetails(Model model){
+        model.addAttribute("employee", new Employee());
+        return "ask-emp-details-view";
+    }
+    
+А вот так мы можем предзаполнить employee
+
+    Employee emp = new Employee();
+    emp.setName("Ivan");
+    emp.setSurname("Ivanov");
+    emp.setSalary(1000);
+    model.addAttribute("employee", emp);
+    return "ask-emp-details-view";    
+    
+#####form:form 
+основная Spring форма, которая содержит в себе другие формы (форма контейнер).
+
+#####form:input 
+форма предназначенная для текста, можно использовать только одну строку.     
+
+######Первый вью, который собирает данные
+
+    <form:form action="showDetails" modelAttribute="employee">
+        Name: <form:input path="name"/>
+        Surname: <form:input path="surname"/>
+        Salary: <form:input path="salary"/>
+        <input type="submit" value="OK">
+    </form:form>
+
+#####<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+Строка необходимая в заголовке страницы что бы работали формы MVC.
+
+#####@ModelAttribute
+`@ModelAttribute("employee") Employee emp` - означает что метод может использовать атрибут "employee". Он автоматически будет дступен во вью.
+
+    @RequestMapping("/showDetails")
+    public String showEmployeeDetails(@ModelAttribute("employee") Employee emp){
+        return "show-emp-details-view";
+    }
+    
+А вот так мы можем менять пришедшие данные
+    
+        String name = emp.getName();
+        emp.setName("Mr. " + name);
+######Второй вью, которые отображает данные
+
+    Your name: ${employee.name}
+    Your surname: ${employee.surname}
+    Your salary: ${employee.salary}    
+    
+#####form:select
+Выпадающих список
+
+    <form:select path="department">
+            <form:option value="Information Technology" label="IT"/>
+            <form:option value="Human Resources" label="HR"/>
+            <form:option value="Sales" label="Sales"/>    
+    </form:select>
+
+#####form:option
+     <form:option value="Information Technology" label="IT"/>
+     
+`label="IT"` - это то что видеть пользователь     
+`value="Information` Technology" - а это значение этого поля, которое попадет в `path="department"`.  
+
+Выводим это на экран конструкцией
+
+    Your department: ${employee.department}
+    
+#####Что бы жестко не прописывать в коде form:select
+Правим класс Employee. Создаем там 
+    
+    private Map<String, String> departments;        
+
+И заполняем это в конструкторе
+
+    public Employee() {
+        departments = new HashMap<>();
+        departments.put("Information Technology", "IT");
+        departments.put( "Human Resources", "HR");
+        departments.put("Sales", "Sales");
+    }
+    
+И меняем форму
+
+    Department: <form:select path="department">
+        <form:options items="${employee.departments}"/>
+    </form:select>    
+    
+####form:radiobutton
+Добавляем в Employee 
+    
+    private String carBrand;         
+    
+В форме ввода данных
+
+    BMW <form:radiobutton path="carBrand" value="BMW"/>
+    Audi <form:radiobutton path="carBrand" value="Audi"/>
+    Mercedes-Benz <form:radiobutton path="carBrand" value="Mercedes-Benz"/>
+    
+В форме вывода данных
+
+    Your car: ${employee.carBrand}         
+    
+######Для предварительно задания данных в form:radiobutton
+
+Изменяем конструктор Employee
+
+    public Employee() {
+        carBrands = new HashMap<>();
+        carBrands.put("BMW", "BMW");
+        carBrands.put("Audi", "Audi");
+        carBrands.put("Mercedes-Benz", "Mercedes-Benz");
+    }    
+    
+В форму ввода 
+
+    <form:radiobuttons path="carBrand" items="${employee.carBrands}"/>    
+    
+####form:checkbox
+В Employee добавляем `private String[] languages;`
+
+В форму выбора добавляем 
+
+    EN <form:checkbox path="languages" value="English"/>
+    EN <form:checkbox path="languages" value="Deutch"/>
+    EN <form:checkbox path="languages" value="French"/>
+    
+В форму вывода данных
+
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
+    Language (s):
+    <ul>
+        <c:forEach var="lang" items="${employee.languages}">
+            <li>${lang}</li>
+        </c:forEach>
+    </ul>
+
+######для преварительно заданных данных в Employee
+
+    private Map<String, String > languageList;
+
+В конструктор
+    
+    languageList = new HashMap<>();
+    languageList.put("English", "EN");
+    languageList.put("Deutch", "DE");
+    languageList.put("French", "FR");      
+    
+В форму отображения
+
+    <form:checkboxes path="languages" items="${employee.languageList}"/>    
+    
+##Валидация форм Spring MVC
+####Java Standard Bean Validation API - Это спецификация
+####Hibernate Validator - Это реализация JSBV API
+Добавляем в maven "hibernate-validator"
+
+#####@Size длина поля
+    @Size(min = 2, message = "name must be min 2 symbols") //минимум 2 символа, и выдается сообщение
+    private String name;
+    
+#####form:errors
+В форму вывода добавляем строку. Она будет выводить ошибки.
+
+    <form:errors path="name"/>    
+#####@Valid
+означает что в контролере используется валидация. В нашем случае, атрибут employee должен пройти валидацию. 
+#####BindingResult
+Параметр BindingResult содержит в себе возможные ошибки валидации. Этот параметр должен идти сразу после атрибута нашей модели.
+    
+    @RequestMapping("/showDetails")
+    public String showEmployeeDetails(@Valid @ModelAttribute("employee") Employee emp, BindingResult bindingResult){
+        if (bindingResult.hasErrors())
+            return "ask-emp-details-view";
+        else
+            return "show-emp-details-view";
+    }    
+    
+#####@NotNull
+Означает что данное поле обязательно к заполнению. В данном случае не сработает, потому что будет не null.
+     
+    @NotNull(message = "surname is required field")
+    private String surname;
+
+#####@NotEmpty
+Означает что данное поле обязательно к заполнению. Не null и не пустое. Но можно обмануть и использовать пробелы.
+
+    @NotEmpty(message = "surname is required field")
+    private String surname;
+
+#####@NotBlank
+Аналог @NotEmpty, но проверяет и на пробелы.
+
+    @NotBlank(message = "surname is required field")
+    private String surname;
+    
+#####@Min
+#####@Max
+Минимальное и максимальное значение поля.
+
+    @Min(value = 500, message = "mast be greater than 499") 
+    @Max(value = 5000, message = "mast be less than 50001")
+    private int salary;        
+    
+####@Pattern 
+поле проверяется на соответствие определенному регулярному выражению.  
+
+####Собственные анотации для валидации
+видео 68
+#####Создаем свою анотация CheckEmail.java и класс для валидации CheckEmailValidator.java
+
+#Spring MVC + Hibernate + AOP
+Все настраиваем как раньше (видео 69)
+
+Зависимости в maven: spring-webmvc, jstl, hibernate-core, mysql-connector-java, c3p0, spring-orm
+
+c3p0 - коннекшен пул для связи с БД. 
+
+Конфигурируем web.xml и applicationContext.xml копипастом с папки курса.
+
+В файле  applicationContext.xml мы сразу создаем бины `sessionFactory` и `transactionManager` что бы не создавать их потом.
+
+
+
+
+    
