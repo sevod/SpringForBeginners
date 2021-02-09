@@ -28,6 +28,13 @@
     <br>
     <br>
     <input type="submit" value="OK">
+    Department: <form:select path="department">
+<%--        <form:option value="Information Technology" label="IT"/>--%>
+<%--        <form:option value="Human Resources" label="HR"/>--%>
+<%--        <form:option value="Sales" label="Sales"/>--%>
+        <form:options items="${employee.departments}"/>
+    </form:select>
+    <br><br>
 </form:form>
 
 </body>

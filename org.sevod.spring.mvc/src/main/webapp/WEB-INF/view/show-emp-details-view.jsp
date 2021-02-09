@@ -10,18 +10,16 @@
 <body>
 <h2>Dear Emloyee, you are WELCOME!!!</h2>
 
-<br>
-<br>
-<br>
+<br><br>
 <%--Yor name: ${param.emloyeeName}--%>
 <%--Yor name: ${nameAttribute}--%>
 
 Your name: ${employee.name}
-<br>
-<br>
+<br><br>
 Your surname: ${employee.surname}
-<br>
-<br>
+<br><br>
 Your salary: ${employee.salary}
+<br><br>
+Your department: ${employee.department}
 </body>
 </html>
