@@ -1,9 +1,8 @@
 package org.sevod.spring.mvc;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import org.sevod.spring.mvc.validation.CheckEmail;
+
+import javax.validation.constraints.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +13,8 @@ public class Employee {
 //    @NotEmpty(message = "surname is required field")
     @NotBlank(message = "surname is required field")
     private String surname;
+    @Min(value = 500, message = "mast be greater than 499")
+    @Max(value = 5000, message = "mast be less than 5001")
     private int salary;
     private String department;
     private Map<String, String> departments;
@@ -21,6 +22,10 @@ public class Employee {
     private Map<String, String> carBrands;
     private String[] languages;
     private Map<String, String > languageList;
+    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{2}", message = "please use pattern XXX-XX-XX")
+    private String phoneNumber;
+    @CheckEmail(value = "abc.com", message = "email mast ends with abc.com")
+    private String email;
 
     public Employee() {
         languageList = new HashMap<>();
@@ -37,6 +42,22 @@ public class Employee {
         carBrands.put("BMW", "BMW");
         carBrands.put("Audi", "Audi");
         carBrands.put("Mercedes-Benz", "Mercedes-Benz");
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Map<String, String> getLanguageList() {
