@@ -1391,4 +1391,54 @@ c3p0 - коннекшен пул для связи с БД.
             model.addAttribute("allEmps", allEmployees);
             return "all-employess";        
 
+####Service    
+Контролер должен работать с Service, а не напрямую с DAO, поскольку DAO может быть несколько.
+#####@Service
+Отмечает класс который содержит бизнес логику. Является соединительным звеном между Controller and DAO. 
+@Service это специальных @Component который при сканировании Spring окажется в Spring Container. 
+@Transactional c DAO переносим в Service.
+
+    @Service
+    public class EmloyeeServiceImpl implements EmployeeService {
+
+    @Autowired
+    private EmpolyeeDAO empolyeeDAO;
+
+    @Override
+    @Transactional
+    public List<Employee> getAllEmployees() {
+        return empolyeeDAO.getAllEmployees();
+        
+        
+###addNewEmployee        
+#####<input type="button" value="Add" onclick="window.location.href = 'addNewEmployee'">
+Во вью добавляем кнопку. Ее перехватит метод контролера который обслуживает этот путь.
+
+    @RequestMapping("/addNewEmployee")
+        public String addNewEmployee(Model model){
+            Employee employee = new Employee();
+            model.addAttribute("employee", employee);
     
+            return "employee-info";        
+            
+#####новое вью
+
+    <form:form action="saveEmployye" modelAttribute="employee">
+        Name <form:input path="name"/>
+        <br><br>
+        Surname <form:input path="surname"/>
+        <br><br>
+        Department <form:input path="department"/>
+        <br><br>
+        Salary <form:input path="salary"/>
+        <input type="submit" value="OK"/>
+    </form:form>
+    
+вызовет контролеер, который сохранит сотрудника и редиректнет на "/" страницу. 
+Что бы работало  `employeeService.saveEmployee(employee);` делаем цепочку действий добавляя этот методв Servic и EmloyeeDAO              
+
+    @RequestMapping("/saveEmployye")
+    public String saveEmloyee(@ModelAttribute("employee") Employee employee){
+        employeeService.saveEmployee(employee);
+        return "redirect:/";
+    }
