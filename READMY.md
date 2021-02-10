@@ -1470,3 +1470,19 @@ c3p0 - коннекшен пул для связи с БД.
 2. Создаем цепочку действий в Service и DAO для получения данных по Employee из БД. Метод getEmployee.
 3. Во втором вью, созадем скрытое поле которе будет содержать id    
 4. В цепочке методов в DAO меняем save на saveOrUpdate
+
+###deleteEmployee
+1. Создаем кнопку во вью аналогичную предыдущему уроку.
+
+3. По окончанию редиректим на страницу с пользователями `return "redirect:/";`
+
+#####id =:employeeId это параметр в запросе
+
+    Query query = session.createQuery("delete from Employee where id =:employeeId"); // в конце, это параметр
+    query.setParameter("employeeId", id);
+    query.executeUpdate();
+    
+###Добавляем AOP
+1. В maven добавляем "aspectjweaver"
+2. Редактируем applicationContext.xml.   
+3. Создаем пакет aspect и в нем MyLoggingAspect

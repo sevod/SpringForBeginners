@@ -17,6 +17,16 @@ public class EmployeeDAOImpl implements EmpolyeeDAO {
     private SessionFactory sessionFactory;
 
     @Override
+    public void deleteEmployee(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("delete from Employee where id =:employeeId"); // в конце, это параметр
+        query.setParameter("employeeId", id);
+        query.executeUpdate();
+//        Employee employee = session.get(Employee.class, id);
+//        session.delete(employee);
+    }
+
+    @Override
     public Employee getEmployee(int id) {
         Session session = sessionFactory.getCurrentSession();
         Employee employee = session.get(Employee.class, id);
@@ -38,4 +48,6 @@ public class EmployeeDAOImpl implements EmpolyeeDAO {
         List<Employee> allEmployees = query.getResultList();
         return allEmployees;
     }
+
+
 }
