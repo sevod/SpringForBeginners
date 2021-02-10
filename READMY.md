@@ -1442,3 +1442,31 @@ c3p0 - коннекшен пул для связи с БД.
         employeeService.saveEmployee(employee);
         return "redirect:/";
     }
+    
+###updateEmployee
+
+####Ссылка в JSP
+Ее не будет видно, мы ее используем при создании кнопки.
+    
+    <c:url var = "updateButton" value="/updateInfo">
+        <c:param name="empId" value="${emp.id}"/>
+    </c:url>
+
+    <td>
+        <input type="button" value="Update" onclick="window.location.href = '${updateButton}'">
+    </td>
+    
+    
+####<form:hidden path="id" />
+скрытое поле, которе может хранить в себе информацию.  
+
+####saveOrUpdate
+метод для работы с hibernate. Если id равен нулю, это сохранение, а если не нуль, это обновление.
+    
+    session.saveOrUpdate(employee);  
+    
+####Обновление информации о сотруднике, описание процесса.
+1. Во вью добавляем кнопку которая вызывает контролер "updateEmployee" и передает туда id сотрудника.
+2. Создаем цепочку действий в Service и DAO для получения данных по Employee из БД. Метод getEmployee.
+3. Во втором вью, созадем скрытое поле которе будет содержать id    
+4. В цепочке методов в DAO меняем save на saveOrUpdate
