@@ -1314,6 +1314,8 @@ Model - это контейнер для хранения данных. Нахо
 видео 68
 #####Создаем свою анотация CheckEmail.java и класс для валидации CheckEmailValidator.java
 
+----------------------------------------------------------------------------------------------------------------------------
+
 #Spring MVC + Hibernate + AOP
 Все настраиваем как раньше (видео 69)
 
@@ -1325,7 +1327,68 @@ c3p0 - коннекшен пул для связи с БД.
 
 В файле  applicationContext.xml мы сразу создаем бины `sessionFactory` и `transactionManager` что бы не создавать их потом.
 
+###DAO data access object
+Вспомогательный компонент для работы с БД.
+
+####@Repository
+это специлизированный @Component. Используется для DAO. При поиски компонентов Спринг будет регистирировать все DAO в Spring Container
+
+#####SessionFactory + @Autowired
+Можно подключать автомотически, предварительно настроив это в applicationContext.xml (конфиг файл)
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+#####@Transactional
+Можно использовать эту анотацию над методом, что бы писать меньше кода. Что бы работало надо правильно настроить applicationContext.xml (конфиг файл)
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    
+####Настройка Spring MVC + Hibernate (Описание видео 70)
+1. Создаем @Entity Employee, где прописываем все связи с БД.
 
 
+    @Entity
+    @Table(name = "employees")
+    public class Employee {    
+    
+2. Создаем DAO 
+
+    
+    public interface EmpolyeeDAO {
+    public List<Employee> getAllEmployees();
+    
+3. Создаем имплементацию DAO EmployeeDAOImpl. Автоматически подключаем SessionFactory и используем @Transactional.
+
+
+    @Repository
+    public class EmployeeDAOImpl implements EmpolyeeDAO {
+    
+        @Autowired
+        private SessionFactory sessionFactory;
+    
+        @Override
+        @Transactional
+        public List<Employee> getAllEmployees() {    
+        
+4. Создаем контролер MyController. С помощью @Autowired подключаем к нашему DAO. Получаем данные с БД, помещаем в модель и вызываем вью all-employess.
+
+
+    @Controller
+    public class MyController {
+    
+        @Autowired
+        private EmpolyeeDAO empolyeeDAO;
+    
+        @RequestMapping("/")
+        public String showAllEmployees(Model model){
+            List<Employee> allEmployees = empolyeeDAO.getAllEmployees();
+            model.addAttribute("allEmps", allEmployees);
+            return "all-employess";        
 
     
