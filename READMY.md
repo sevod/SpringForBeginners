@@ -1513,7 +1513,7 @@ c3p0 - коннекшен пул для связи с БД.
     @RequestMapping("/api")
     public class MyRESTController {
 
-######Из пердыдущего проекта копируем 3 пакета.
+######Из предыдущего проекта копируем 3 пакета.
 
 #####/api/employees
 получаем список всех сотрудников. Возврат будет в формате JSON за счет использованного нами "jackson-databind".
@@ -1523,4 +1523,16 @@ c3p0 - коннекшен пул для связи с БД.
         List<Employee> allEmployee = employeeService.getAllEmployees();
         return allEmployee;
     }
+    
+####api/employess/{employeeId}
+получение одного сотрудника по id
 
+#####@PathVariable
+Используем для получения данных из запроса
+
+    @GetMapping("/employees/{id}")
+    public Employee getEmployee(@PathVariable int id){
+        Employee employee = employeeService.getEmployee(id);
+        return employee;
+    }
+    
