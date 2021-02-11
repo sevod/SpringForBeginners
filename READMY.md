@@ -1552,3 +1552,11 @@ c3p0 - коннекшен пул для связи с БД.
         return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
     }
     
+####Глобальная обработка исключений.
+Вынесем методы обработки ошибок в отдельную сущность и пометим ее как @ControllerAdvice, что бы они могли обрабатывать все эксепшены.
+
+    @ControllerAdvice
+    public class EmployeeGlobalExceptionHandler {
+
+#####@ControllerAdvice
+Занимается отлавливанием исключений.
