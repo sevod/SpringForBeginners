@@ -1536,3 +1536,19 @@ c3p0 - коннекшен пул для связи с БД.
         return employee;
     }
     
+####Обработка ошибок
+
+#####@ExceptionHandler
+отмечается метод в ответственный за обработку исключений.
+
+#####ResponseEntity<>
+Это обёртка HTTP response. Использует дженерики, которые нужно добавить в http response.
+
+    @ExceptionHandler
+    public ResponseEntity<EmployeeIncorrectData> handleException(NoSuchEmployeeException exception){
+        EmployeeIncorrectData data = new EmployeeIncorrectData();
+        data.setInfo(exception.getMessage());
+
+        return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+    }
+    
