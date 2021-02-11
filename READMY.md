@@ -1505,4 +1505,22 @@ c3p0 - коннекшен пул для связи с БД.
 2. Конфигурировать будем в MyConfig.java. Повторяем настройки из предыдущего проекта (там это все было в xml файле).
 3. Для настройки Dispatcher Servlet используем класс MyWebInitializer.java
  
+ 
+####@RestController
+Это специальный Controller который управляет REST запросами и ответами
+
+    @RestController
+    @RequestMapping("/api")
+    public class MyRESTController {
+
+######Из пердыдущего проекта копируем 3 пакета.
+
+#####/api/employees
+получаем список всех сотрудников. Возврат будет в формате JSON за счет использованного нами "jackson-databind".
+
+    @GetMapping("/employees")
+    public List<Employee> showAllEmployees(){
+        List<Employee> allEmployee = employeeService.getAllEmployees();
+        return allEmployee;
+    }
 
