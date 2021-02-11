@@ -1486,3 +1486,23 @@ c3p0 - коннекшен пул для связи с БД.
 1. В maven добавляем "aspectjweaver"
 2. Редактируем applicationContext.xml.   
 3. Создаем пакет aspect и в нем MyLoggingAspect
+
+#Spring REST
+
+#####REST REpresentational State Transfer
+
+#####@GetMapping и PostMapping
+Аналоги @RequestMapping под соответствующий протокол
+
+#Методы REST
+- GET
+- POST
+- PUT
+- DELETE
+
+###Создаем новый проект
+1. Добавляем зависимости spring-webmvc, hibernate-core, mysql-connector-java, c3p0, spring-orm, javax.servlet-api, jackson-databind (для конвертации в JSON)
+2. Конфигурировать будем в MyConfig.java. Повторяем настройки из предыдущего проекта (там это все было в xml файле).
+3. Для настройки Dispatcher Servlet используем класс MyWebInitializer.java
+ 
+
