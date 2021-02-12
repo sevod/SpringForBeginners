@@ -1515,7 +1515,7 @@ c3p0 - коннекшен пул для связи с БД.
 
 ######Из предыдущего проекта копируем 3 пакета.
 
-#####/api/employees
+#####/api/employees (GET)
 получаем список всех сотрудников. Возврат будет в формате JSON за счет использованного нами "jackson-databind".
 
     @GetMapping("/employees")
@@ -1524,7 +1524,7 @@ c3p0 - коннекшен пул для связи с БД.
         return allEmployee;
     }
     
-####api/employess/{employeeId}
+####api/employess/{employeeId} (GET)
 получение одного сотрудника по id
 
 #####@PathVariable
@@ -1561,7 +1561,7 @@ c3p0 - коннекшен пул для связи с БД.
 #####@ControllerAdvice
 Занимается отлавливанием исключений.
 
-####api/employees
+####api/employees (POST)
 добавление сотрудника
 
 #####@PostMapping
@@ -1578,3 +1578,23 @@ c3p0 - коннекшен пул для связи с БД.
         "department": "HR",
         "salary": 1250
     }    
+    
+####api/employees (PUT)
+Изменение работника
+
+#####@PutMapping
+    @PutMapping("/employees")
+    public Employee updateEmployee (@RequestBody Employee employee){
+        employeeService.saveEmployee(employee);
+        return employee;
+    }    
+    
+####api/employees/{employeeId} (DELETE)    
+удаление сотрудника по id.
+
+#####@DeleteMapping
+    @DeleteMapping("/employees/{id}")
+    public String deleteEmployee(@PathVariable int id){
+        employeeService.deleteEmployee(id);
+        return "Employee with ID=" + id + " was deleted";
+    }
