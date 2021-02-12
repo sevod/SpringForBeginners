@@ -33,5 +33,9 @@ public class MyRESTController {
         return employee;
     }
 
-
+    @PostMapping("/employees")
+    public Employee addNewEmployee(@RequestBody Employee employee){
+        employeeService.saveEmployee(employee);
+        return employee; //тут возвращается объект уже с id который приходит с БД
+    }
 }

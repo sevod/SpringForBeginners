@@ -1560,3 +1560,21 @@ c3p0 - коннекшен пул для связи с БД.
 
 #####@ControllerAdvice
 Занимается отлавливанием исключений.
+
+####api/employees
+добавление сотрудника
+
+#####@PostMapping
+    @PostMapping("/employees")
+    public Employee addNewEmployee(@RequestBody Employee employee){
+        employeeService.saveEmployee(employee);
+        return employee; //тут возвращается обьект уже с id который приходит с БД
+    }       
+    
+#####JSON в Postman
+    {
+        "name": "Ivan",
+        "surname": "Alekseev",
+        "department": "HR",
+        "salary": 1250
+    }    
